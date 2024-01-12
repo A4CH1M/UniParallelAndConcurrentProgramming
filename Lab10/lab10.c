@@ -155,7 +155,7 @@ void matrixMultiplicationThreads(const int** pMatrixA, const int** pMatrixB, int
     //int i, j, k;
     //int ii, jj;
     int ph0, h1, h2, i0, i1, i3;
-    int numberOfPackages = (size % packageSize == 0) ? size / packageSize : size / packageSize + 1;
+    //int numberOfPackages = (size % packageSize == 0) ? size / packageSize : size / packageSize + 1;
 #pragma omp parallel for private(ph0, h1, h2, i0, i1, i3) num_threads(numberOfThreads) schedule(static)
     for (ph0 = 0; ph0 <= floord(size - 1, packageSize); ph0 += 1) {
         for (h1 = 0; h1 <= (size - 1) / packageSize; h1 += 1) {
