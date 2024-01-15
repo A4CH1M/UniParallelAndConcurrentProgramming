@@ -14,21 +14,21 @@ double f(double x) {
 
 int main() {
 
-	int lowerBound = -10;
-	int upperBound = 10;
+	int lowerBound = -15;
+	int upperBound = 16;
 	unsigned int nThreads = 4;
 
-	double start, stop, fPrimSeq, fPrimPar;
+	double start, stop, fBaseSeq, fBasePar;
 
 	start = omp_get_wtime();
-	fPrimSeq = integrate(f, lowerBound, upperBound, 0.000001);
+	fBaseSeq = integrate(f, lowerBound, upperBound, 0.000001);
 	stop = omp_get_wtime();
-	printf("Integrate of f(x) [%d, %d] = %f [time: %f]\n", lowerBound, upperBound, fPrimSeq, stop - start);
+	printf("Integrate of f(x) [%d, %d] = %f [time: %f]\n", lowerBound, upperBound, fBaseSeq, stop - start);
 
 	start = omp_get_wtime();
-	fPrimPar = integrateThreads(f, lowerBound, upperBound, 0.000001, 4);
+	fBasePar = integrateThreads(f, lowerBound, upperBound, 0.000001, 4);
 	stop = omp_get_wtime();
-	printf("Integrate of f(x) [%d, %d] = %f [time: %f]\n", lowerBound, upperBound, fPrimPar, stop - start);
+	printf("Integrate of f(x) [%d, %d] = %f [time: %f]\n", lowerBound, upperBound, fBasePar, stop - start);
 }
 
 double integrate(double(*f)(double), double lowerBoundary, double upperBoundary, double eps) {
