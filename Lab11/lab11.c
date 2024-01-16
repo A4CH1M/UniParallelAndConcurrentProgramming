@@ -12,23 +12,34 @@ double f(double x) {
 	return 0.5 * (3.0 + sin(x) * cos(3.0*x));
 }
 
+double f2(double x) {
+	return sin(x) * cos(x) - 3;
+}
+
+double f3(double x) {
+	return sin(x);
+}
+
 int main() {
 
-	int lowerBound = -15;
-	int upperBound = 16;
+	double lowerBound = -15.5;
+	double upperBound = 16.5;
 	unsigned int nThreads = 4;
 
-	double start, stop, fBaseSeq, fBasePar;
+	double start, stop, tSeq, tPar, fBaseSeq, fBasePar;
 
 	start = omp_get_wtime();
 	fBaseSeq = integrate(f, lowerBound, upperBound, 0.000001);
 	stop = omp_get_wtime();
-	printf("Integrate of f(x) [%d, %d] = %f [time: %f]\n", lowerBound, upperBound, fBaseSeq, stop - start);
+	tSeq = stop - start;
+	printf("Integrate of f(x) [%.2f, %.2f] = %f [time: %f]\n", lowerBound, upperBound, fBaseSeq, stop - start);
 
 	start = omp_get_wtime();
 	fBasePar = integrateThreads(f, lowerBound, upperBound, 0.000001, 4);
 	stop = omp_get_wtime();
-	printf("Integrate of f(x) [%d, %d] = %f [time: %f]\n", lowerBound, upperBound, fBasePar, stop - start);
+	tPar = stop - start;
+	printf("Integrate of f(x) [%.2f, %.2f] = %f [time: %f]\n", lowerBound, upperBound, fBasePar, stop - start);
+	printf("Speedup: %f\n", tSeq / tPar);
 }
 
 double integrate(double(*f)(double), double lowerBoundary, double upperBoundary, double eps) {
@@ -52,7 +63,8 @@ double integrate(double(*f)(double), double lowerBoundary, double upperBoundary,
 		double h = (b - a) / div;
 
 		for (int i = 0; i < div; i++) {
-			sum += 0.5 * (f(i * h) + f(i * (h + 1)));
+			//sum += f(a + i * h);
+			sum += 0.5 * (f(a + i * h) + f(a + (i + 1) * h));
 		}
 		sum *= h;
 
@@ -85,7 +97,8 @@ double integrateThreads(double(*f)(double), double lowerBoundary, double upperBo
 
 #pragma omp parallel for private(i) reduction(+:sum) num_threads(nThreads)
 		for (i = 0; i < div; i++) {
-			sum += 0.5 * (f(i * h) + f(i * (h + 1)));
+			//sum += f(a + i * h);
+			sum += 0.5 * (f(a + i * h) + f(a + (i + 1) * h));
 		}
 		sum *= h;
 
