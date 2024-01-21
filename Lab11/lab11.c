@@ -108,34 +108,3 @@ double integrateThreads(double(*f)(double), double lowerBoundary, double upperBo
 
 	return sum;
 }
-
-//double integrate(double(*f)(double), double lowerBoundary, double upperBoundary, double eps) {
-//
-//	if (lowerBoundary > upperBoundary) {
-//		double tmp = lowerBoundary;
-//		lowerBoundary = upperBoundary;
-//		upperBoundary = tmp;
-//	}
-//
-//	int i, div = 2;
-//	double sum = 0.0;
-//	double sumOld, a, b;
-//	a = lowerBoundary;
-//	b = upperBoundary;
-//
-//	do {
-//
-//		sumOld = sum;
-//		sum = 0.0;
-//		double h = (b - a) / div;
-//
-//		for (int i = 0; i < div; i++) {
-//			sum += f(i * h);
-//		}
-//		sum *= h;
-//
-//		div *= 2;
-//
-//	} while (fabs(sum - sumOld) > eps);
-//	return sum;
-//}
